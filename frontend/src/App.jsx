@@ -37,12 +37,12 @@ function App() {
   });
 
   if (isLoading) {
-    return (
-      <div>
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
+		return (
+			<div className='h-screen flex justify-center items-center'>
+				<LoadingSpinner size='lg' />
+			</div>
+		);
+	}
   console.log(authUser);
 
   return (
