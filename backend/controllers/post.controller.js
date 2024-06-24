@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 import { v2 as cloudinary } from "cloudinary";
+import Notification from "../models/notification.model.js";
 
 
 
@@ -90,27 +91,23 @@ const commentOnPost = async (req, res) => {
 
 const likeUnlikePost = async (req, res) => {
 	try {
-		const userId = req.user._id.toString();
-		console.log(userId);
-
+		const userId = req.user._id;
 		const { id: postId } = req.params;
-		console.log(postId);
 
 		const post = await Post.findById(postId);
+
 		if (!post) {
 			return res.status(404).json({ error: "Post not found" });
 		}
 
 		const userLikedPost = post.likes.includes(userId);
 
-		console.log(userLikedPost, " liked suer");
 		if (userLikedPost) {
 			// Unlike post
 			await Post.updateOne({ _id: postId }, { $pull: { likes: userId } });
 			await User.updateOne({ _id: userId }, { $pull: { likedPosts: postId } });
 
 			const updatedLikes = post.likes.filter((id) => id.toString() !== userId.toString());
-			console.log("unlike post");
 			res.status(200).json(updatedLikes);
 		} else {
 			// Like post
@@ -126,11 +123,11 @@ const likeUnlikePost = async (req, res) => {
 			await notification.save();
 
 			const updatedLikes = post.likes;
-			console.log("liked post");
 			res.status(200).json(updatedLikes);
 		}
 	} catch (error) {
-		res.status(500).json({ error: "Internal  error" });
+		console.log("Error in likeUnlikePost controller: ", error);
+		res.status(500).json({ error: "Internal server error" });
 	}
 };
 
