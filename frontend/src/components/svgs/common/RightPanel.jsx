@@ -14,17 +14,17 @@ const RightPanel = () => {
         if (!res.ok) {
           throw new Error(data.message || "something went wrong.");
         }
-		return data;
+        return data;
       } catch (error) {
         throw new Error(error.message);
       }
     },
   });
 
-  const {follow, isPending} = useFollow()
+  const { follow, isPending } = useFollow();
 
-  if(suggestedUsers?.length ===0){
-	return <div className="md:w-64 w-0"></div>
+  if (suggestedUsers?.length === 0) {
+    return <div className="md:w-64 w-0"></div>;
   }
   return (
     <div className="hidden lg:block my-4 mx-2">
@@ -66,13 +66,11 @@ const RightPanel = () => {
                   <button
                     className="btn bg-white text-black hover:bg-white hover:opacity-90 rounded-full btn-sm"
                     onClick={(e) => {
-						e.preventDefault()
-						follow(user._id)
-					}}
+                      e.preventDefault();
+                      follow(user._id);
+                    }}
                   >
-                    {
-						isPending ? <LoadingSpinner size="sm"/>: "Follow"
-					}
+                    {isPending ? <LoadingSpinner size="sm" /> : "Follow"}
                   </button>
                 </div>
               </Link>
